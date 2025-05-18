@@ -215,7 +215,21 @@ export default function StegoChatApp() {
         }
         const file = e.target.files[0];
         if (!file || !activeId || !message) return;
-        if (!file.type.startsWith('image/png') || file.size > 5 * 1024 * 1024) return;
+
+        if (file.type !== 'image/png') {
+            alert('This file is not a true PNG. Only PNG files preserve steganographic data. Use a real PNG, not a converted photo.');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File size too large.');
+            return;
+        }
+
+        if (file.size < 10 * 1024) {
+            alert('File size too small.');
+            return;
+        }
 
         const ratchet = ratchets[activeId];
         const { key: messageKey, chain: updatedSendChain } = await advanceRatchet(ratchet.sendChain, 'stego');
