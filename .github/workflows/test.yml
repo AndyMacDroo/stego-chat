@@ -19,4 +19,4 @@ jobs:
       - run: npm run test:setup
 
       - run: npm run build
-      - run: npx run test
+      - run: npm run test
