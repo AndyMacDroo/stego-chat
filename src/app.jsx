@@ -16,7 +16,7 @@ import {
 } from './crypto';
 
 import { clearConversations, loadConversations, saveConversation } from './db';
-import { decodeMessageFromImage, encodeMessageInImage, } from './stego';
+import { decodeMessageFromImage, encodeMessageInImage, normalizeImageToPNGBlob } from './stego';
 
 export default function StegoChatApp() {
 
@@ -245,7 +245,8 @@ export default function StegoChatApp() {
 
         window.__lastEncrypted = encrypted;
 
-        const url = await encodeMessageInImage(file, binary);
+        const normalizedFile = await normalizeImageToPNGBlob(file);
+        const url = await encodeMessageInImage(normalizedFile, binary);
         if (isMobile()) {
             setEncodedImageUrl(url);
         } else {
