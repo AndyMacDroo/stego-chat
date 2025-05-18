@@ -2,6 +2,8 @@
 
 **StegoChat** is a secure messaging prototype (see ⚠️ [Warning](#warning)) that combines steganography with a double ratchet encryption mechanism. Messages are embedded into PNG images, encrypted with evolving keys, and exchanged manually between peers. The system is fully decentralised and runs entirely within the browser.
 
+![Demo](media/stego.gif)
+
 ## What is Steganography
 
 Steganography is the practice of hiding information in plain sight. Instead of scrambling a message so it looks like gibberish (encryption), steganography hides the fact that a message exists at all.
