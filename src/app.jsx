@@ -19,6 +19,10 @@ import { clearConversations, loadConversations, saveConversation } from './db';
 import { decodeMessageFromImage, encodeMessageInImage, } from './stego';
 
 export default function StegoChatApp() {
+
+    function isMobile() {
+        return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+    }
     const [conversations, setConversations] = useState({});
     const [activeId, setActiveId] = useState(null);
 
@@ -30,7 +34,7 @@ export default function StegoChatApp() {
     const [qrPublicKey, setQrPublicKey] = useState('');
 
     const [ratchets, setRatchets] = useState({});
-
+    const [encodedImageUrl, setEncodedImageUrl] = useState(null);
     const [pendingConversationId, setPendingConversationId] = useState(null);
 
     useEffect(() => {
@@ -242,11 +246,14 @@ export default function StegoChatApp() {
         window.__lastEncrypted = encrypted;
 
         const url = await encodeMessageInImage(file, binary);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'stego.png';
-        a.click();
-
+        if (isMobile()) {
+            setEncodedImageUrl(url);
+        } else {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'stego.png';
+            a.click();
+        }
         const safeRatchet = {
             rootKey: Array.from(updatedRatchet.rootKey),
             sendChain: Array.from(updatedRatchet.sendChain),
@@ -442,6 +449,14 @@ export default function StegoChatApp() {
                         <div><strong>Their Public Key:</strong></div>
                         <div>{conversations[activeId]?.theirPublicKey || '—'}</div>
                     </div>
+                    {encodedImageUrl && (
+                        <div className="mt-4 text-center">
+                            <div className="text-sm text-gray-600">Tap to open, then long-press to save</div>
+                            <a href={encodedImageUrl} target="_blank" rel="noopener noreferrer">
+                                <img src={encodedImageUrl} alt="Encoded stego image" className="inline-block border mt-2 max-w-full" />
+                            </a>
+                        </div>
+                    )}
                     <div className="bg-gray-100 p-3 rounded flex-1 overflow-y-auto mb-2">
                         {(conversations[activeId].history || []).map((entry, index) => (
                             <div key={index} className={`my-1 px-3 py-2 rounded-lg text-sm max-w-[75%] ${entry.type === 'sent' ? 'ml-auto bg-blue-500 text-white' : 'mr-auto bg-white border'}`}>
