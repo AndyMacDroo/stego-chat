@@ -21,6 +21,11 @@ StegoChat combines this with encryption, so even if someone does extract the hid
 - Local state and history with ratchet continuation (stored via [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API))  
 - Entirely client-side; no data leaves the browser unless the user explicitly shares it
 
+## GitHub Pages Deployment
+
+This project is deployed using [GitHub Pages](https://pages.github.com/) at:
+
+**https://andymacdroo.github.io/stego-chat/**
 
 ## Protocol Overview
 
